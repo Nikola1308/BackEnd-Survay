@@ -1,12 +1,12 @@
 const express = require('express')
 require('./mongodb/mongoose')
-//const ToDoList = require('./models/ToDoList')
-const toDoList = require('./routers/toDoListRouts')
+const survayList = require('./routers/newSurvayRouts')
+const questionList = require('./routers/newQuestionRout')
 
 
 const app = express()
 
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3004
 app.use((req,res,next)=>{
     next();
 })
@@ -21,8 +21,10 @@ app.use(function(req, res, next) {
     next();
   });
 
-app.use(toDoList)
+app.use(survayList,questionList)
 
 app.listen(port,()=>{
     console.log('Serve is up on port: ' + port)
 })
+
+
