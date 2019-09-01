@@ -1,3 +1,4 @@
+//Token JWT
 module.exports = {
     googleOAuth: (req, res, next) => {
         // Generate token
