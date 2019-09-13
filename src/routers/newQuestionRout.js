@@ -1,5 +1,5 @@
 const express = require('express')
-const survayList = require('../models/SurvayList')
+const surveyList = require('../models/SurveyList')
 const router = new express.Router()
 
 /*

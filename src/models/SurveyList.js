@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
+//Schema for new User
 const NewUser = new Schema({
     id:{
         type:String
@@ -15,12 +16,14 @@ const NewUser = new Schema({
 
 module.exports.NewUser = mongoose.model('NewUser',NewUser)
 
-const NewSurvay = new Schema({
-    titleForNewSurvay:{
+
+//Schema for new Survey
+const NewSurvey = new Schema({
+    titleForNewSurvey:{
         type:String,
         required:true
     },
-    descriptionForNewSurvay:{
+    descriptionForNewSurvey:{
         type:String,
         required:true
     },
@@ -31,7 +34,7 @@ const NewSurvay = new Schema({
 })
 
 //Pre Hook for deleting Survay by id , questions from that survay and anwers
-NewSurvay.pre('remove', async function(next){
+NewSurvey.pre('remove', async function(next){
     try{
        let answersForDelete =await this.model('NewQuestion').find({_id:{$in: this.questions }}).exec()
 
@@ -55,11 +58,11 @@ NewSurvay.pre('remove', async function(next){
 })
 
 
-module.exports.NewSurvay = mongoose.model('NewSurvay',NewSurvay)
+module.exports.NewSurvey = mongoose.model('NewSurvey',NewSurvey)
 
-
+//Schema forn new Question
 const NewQuestion = new Schema({
-    questionTittle:{
+    questionTitle:{
         type:String
     },
     answers:[{
@@ -81,7 +84,7 @@ NewQuestion.pre('remove', async function(next){
 
 module.exports.NewQuestion = mongoose.model('NewQuestion',NewQuestion)
 
-
+//Schema for new Answer
 const newAnswer = new Schema({
     answerTitle:{
         type:String

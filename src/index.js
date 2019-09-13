@@ -1,6 +1,6 @@
 const express = require('express')
 require('./mongodb/mongoose')
-const survayList = require('./routers/newSurvayRouts')
+const surveyList = require('./routers/newSurveyRouts')
 const questionList = require('./routers/newQuestionRout')
 
 
@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
     next();
   });
 
-app.use(survayList,questionList)
+app.use(surveyList,questionList)
 
 app.listen(port,()=>{
     console.log('Serve is up on port: ' + port)
