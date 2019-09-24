@@ -106,38 +106,42 @@ class SurveyController {
     }
 
     static async postWholeSurvey(req,res){
+        
         const survey = new surveyList.NewSurvey({
-            titleForNewSurvey:req.body.titleForNewSurvey,
-            descriptionForNewSurvey:req.body.descriptionForNewSurvey
+            titleForNewSurvey:req.body.newSurvay.survay.titleForNewSurvey,
+            descriptionForNewSurvey:req.body.newSurvay.survay.descriptionForNewSurvey
         })
             let newSurvey = await survey.save()
-            let questions =  req.body.questions;
-    
-            questions.forEach(async (question) => {
-    
-                const newQuestion = new surveyList.NewQuestion({
-                    questionTitle: question.questionTitle
+
+            let questions =  req.body.newSurvay.survay.questions;
+            let newQuestion = ''
+            let newAnswer = ''
+            Object.keys(questions).map(async (question) => {
+                if (typeof questions[question] === 'object')
+              
+                newQuestion= new surveyList.NewQuestion({
+                    questionTitle: questions[question].title
+                    
                 });
-    
-                newQuestion.save();
-    
-                await surveyList.NewSurvey.findByIdAndUpdate(newSurvey._id, {
-                    $addToSet:{questions:newQuestion}},{new:true,runValidators:true
-                })
-    
-                question.answers.forEach( async (answer) => {
-                    const newAnswer = new surveyList.newAnswer({
-                        answerTitle : answer.answerTitle,
-                        answerDecision : answer.answerValue
-                    })
-                    newAnswer.save()
-    
-                    await surveyList.NewQuestion.findByIdAndUpdate(newQuestion._id, {
-                        $addToSet:{answers:newAnswer}},{new:true,runValidators:true
-                    })
-                });
+              
+            let newQuestionSaved =await newQuestion.save();
+                await surveyList.NewSurvey.findByIdAndUpdate(newSurvey.id, {
+                    $addToSet:{questions:newQuestionSaved}},{new:true,runValidators:true
+                })             
+                  
+               Object.keys(questions[question].answers).map( async (answer) => {                      
+                    if(typeof questions[question].answers[answer]==='object' )
+                        
+                        newAnswer = new surveyList.newAnswer({
+                        answerTitle :questions[question].answers[answer].titleAnswer
+                      })
+                         newAnswer.save()
+                         await surveyList.NewQuestion.findByIdAndUpdate(newQuestionSaved._id, {
+                            $addToSet:{answers:newAnswer}},{new:true,runValidators:true
+                        })
+                    
+                  });  
             });
-       
     }
 }
 
