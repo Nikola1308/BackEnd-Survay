@@ -20,12 +20,7 @@ class SurveyController {
 
     static async getAllSurveys (req, res)  {
         try{
-            const surveys = await surveyList.NewSurvey.find({}).populate({
-                path:'questions',
-                populate:{
-                    path:'answers'
-                }
-            }).exec()
+            const surveys = await surveyList.NewSurvey.find({},{titleForNewSurvey:1,descriptionForNewSurvey:1})
             res.send(surveys)
         }catch(e){
             res.status(500).send(e)
@@ -142,6 +137,7 @@ class SurveyController {
                     
                   });  
             });
+            res.json('Uspjelo');
     }
 }
 
